@@ -181,6 +181,8 @@ def collect(repo_root: Path):
         for file in files:
             if not file.lower().endswith(".md"):
                 continue
+            if file == "README.md":
+                continue
             fp = Path(root) / file
             try:
                 with open(fp, "r", encoding="utf-8") as f:
@@ -281,6 +283,7 @@ def main():
     # ---------------------------------------------------------------
     if is_pr_mode:
         print(f"📄 PR mode — checking {len(args.files)} changed file(s)")
+        args.files = [f for f in args.files if os.path.basename(f) != "README.md"]
         tasks = collect_from_files(args.files)
         print(f"\n🔗 Total links in changed files: {len(tasks)}")
 
